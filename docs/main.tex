@@ -1,0 +1,72 @@
+\documentclass[11pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage[margin=1in]{geometry}  % Margins
+\usepackage{fancyhdr} % For page headers
+\usepackage{minted} % For code input
+\usepackage{txfonts}
+\usepackage{biblatex} % For references
+\usepackage{tcolorbox}
+\addbibresource{docs/references.bib}
+% For clickable links to navigate around the document
+\usepackage{hyperref}
+\usepackage{xcolor}
+\hypersetup{
+  colorlinks   = true, %Colours links instead of ugly boxes
+  urlcolor     = red, %Colour for external hyperlinks
+  linkcolor    = blue, %Colour of internal links
+  citecolor   = blue %Colour of citations
+}
+
+% Color Boxes
+\tcbset{colback=red!5,colframe=red!75!black}
+% Page Header
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{{\footnotesize Gabriel Dennis s4502875}}
+\lhead{{\footnotesize Semi-Supervised Classification with Autoencoders}}
+\rfoot{Page \thepage}
+
+% No indents on paragraphs
+\setlength{\parindent}{0pt}
+
+\begin{document}
+%-----------------------------------
+% Title Page
+\input{docs/titlepage/titlepage}
+\newpage
+\input{docs/consent}
+\newpage
+%-----------------------------------
+
+%-----------------------------------
+% TOC
+\tableofcontents
+%-----------------------------------
+\newpage
+
+%-----------------------------------
+% Theory Introduction 
+\input{docs/introduction/introduction}
+%-----------------------------------
+\newpage
+
+%-----------------------------------
+% Theory:
+\input{docs/Theory/theory}
+\newpage
+%----------------------------------
+%-----------------------------------
+% Implementation in Pytorch
+\input{docs/implementation/implementation}
+%-----------------------------------
+\newpage
+%----------------------------------
+% Exercise Solutions
+\input{docs/solutions/solutions}
+
+\newpage
+%-----------------------------------
+% References 
+\printbibliography
+\end{document}
