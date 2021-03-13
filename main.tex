@@ -1,0 +1,139 @@
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage[margin=1in]{geometry}  % Margins
+\usepackage{fancyhdr} % For page headers
+ % For code input
+%\usepackage{txfonts}
+\usepackage{caption}
+\usepackage{tikz}
+\usepackage{xstring}
+\usetikzlibrary{fit,positioning}
+% To draw neural networks
+\usepackage{neuralnetwork}
+
+\usepackage{biblatex} % For references
+\usepackage{tcolorbox}
+\usepackage{txfonts} 
+\addbibresource{docs/references.bib}
+% For clickable links to navigate around the document
+\usepackage{hyperref}
+\usepackage{xcolor}
+\hypersetup{
+  colorlinks   = true, %Colours links instead of ugly boxes
+  urlcolor     = blue, %Colour for external hyperlinks
+  linkcolor    = blue, %Colour of internal links
+  citecolor   = blue %Colour of citations
+}
+
+\usepackage{amsfonts}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+% Math commands
+\newcommand{\bin}{\sf Bin}
+\newcommand{\G}{\sf G}
+\newcommand{\Hyp}{\sf Hyp}
+\newcommand{\Po}{\sf Po}
+%\newcommand{\U}{\sf U}
+\newcommand{\ex}{\sf Exp}
+\newcommand{\Nor}{\sf N}
+\newcommand{\gam}{\sf Gam} 
+\newcommand{\Em}{\mathbb E}
+\newcommand{\Pm}{\mathbb P}
+\newcommand{\R}{\mathbb R}
+\newcommand{\B}{\cal B}
+\newcommand{\N}{\mathbb N}
+\newcommand{\Z}{\mathbb Z}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\C}{\mathbb C}
+\newcommand{\gvn}{\,|\,}
+\newcommand{\e}{\mbox{e}}
+\newcommand{\Var}{\mbox{Var}}
+\newcommand{\cov}{\mbox{Cov}}
+\newcommand{\ds}{\displaystyle}
+\newcommand{\subvect}[1]{\mbox{\small \boldmath #1}}
+\newcommand\isim{\stackrel{\mathclap{\normalfont\mbox{\tiny{$iid$}}}}{\sim}}
+\newcommand{\vect}[1]{\boldsymbol #1}
+% Boldface commands and vectors
+\newcommand{\vbe}{\vect{\beta}}
+\newcommand{\V}{\vect{V}}
+\newcommand{\U}{\vect{U}}
+\newcommand{\D}{\vect{D}}
+\newcommand{\X}{\vect{X}}
+\newcommand{\Y}{\vect{Y}}
+
+%\newcommand{\vect}[1]{\mbox{\boldmath $#1$}}
+
+\newcommand{\bx}{\vect{x}}
+\newcommand{\by}{\vect{y}}
+\newcommand{\mr}{\mathring}
+\renewcommand{\geq}{\geqslant}
+\renewcommand{\leq}{\leqslant}
+\newcommand{\lb}{\langle}
+\newcommand{\rb}{\rangle}
+\usepackage{color,soul}
+
+% Color Boxes
+\tcbset{colback=red!5,colframe=red!75!black}
+% Page Header
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{{\footnotesize Gabriel Dennis s4502875}}
+\lhead{{\footnotesize Digit Generation with Variational Autoencoders}}
+\rfoot{Page \thepage}
+
+% No indents on paragraphs
+\setlength{\parindent}{0pt}
+% Spacing
+\setlength{\parskip}{1em}
+
+% Code
+\usepackage{minted}
+\begin{document}
+%-----------------------------------
+% Title Page
+\input{docs/titlepage/titlepage}
+\newpage
+\input{docs/consent}
+\newpage
+%-----------------------------------
+
+%-----------------------------------
+% TOC
+\tableofcontents
+%-----------------------------------
+\newpage
+
+%-----------------------------------
+% Theory Introduction 
+\input{docs/introduction/introduction}
+%-----------------------------------
+
+
+%-----------------------------------
+% Theory:
+\input{docs/Theory/theory}
+
+%----------------------------------
+%-----------------------------------
+% Implementation in Pytorch
+\newpage
+\input{docs/implementation/implementation}
+%-----------------------------------
+\newpage
+%----------------------------------
+% Exercise Solutions
+\addcontentsline{toc}{section}{References}
+\printbibliography
+
+\newpage
+\input{docs/solutions/solutions}
+
+
+%-----------------------------------
+
+
+
+
+\end{document}
