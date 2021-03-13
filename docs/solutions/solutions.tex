@@ -1,9 +1,28 @@
 \section{Exercise Solutions \label{section:Exercise Solutions}}
 
 
+
+
+
 \subsection{Exercise 1\label{subsection:Exercise 1}}
+\begin{tcolorbox}[colback=blue!5,colframe=blue!75!black,title=Solution]
+
+\begin{align*}
+    \log p_{\vect{\theta}} (\bx) =& \Em_{q_{\vect{\phi}}(\vect{z}|\vect{x})} [ \log p_{\vect{\theta}} (\bx) ]\\
+    =& \Em_{q_{\vect{\phi}}(\vect{z}|\vect{x})} \Bigg[ \log \Bigg(\frac{p_{\vect{\theta}} (\bx, \vect{z})}{p_{\vect{\theta}} (\vect{z}|\bx)}\Bigg)\Bigg]\\
+    =& \Em_{q_{\vect{\phi}}(\vect{z}|\vect{x})} \Bigg[ \log \Bigg(\frac{p_{\vect{\theta}} (\bx, \vect{z})q_{\vect{\phi}}(\vect{z}|\vect{x})}{q_{\vect{\phi}}(\vect{z}|\vect{x})p_{\vect{\theta}} (\vect{z}|\bx)}\Bigg)\Bigg]\\
+    =& \Em_{q_{\vect{\phi}}(\vect{z}|\vect{x})} \Bigg[ \log \Bigg(\frac{p_{\vect{\theta}} (\bx, \vect{z})}{q_{\vect{\phi}}(\vect{z}|\vect{x})}\Bigg)\Bigg] + \Em_{q_{\vect{\phi}}(\vect{z}|\vect{x})} \Bigg[ \log \Bigg(\frac{q_{\vect{\phi}}(\vect{z}|\vect{x})}{p_{\vect{\theta}} (\vect{z}|\bx)}\Bigg)\Bigg]
+\end{align*}
+\end{tcolorbox}
+
 \subsection{Exercise 2\label{subsection:Exercise 2}}
-\subsection{Exercise 3\label{subsection:Exercise 3}}
-\subsection{Exercise 4\label{subsection:Exercise 4}}
-\subsection{Exercise 5\label{subsection:Exercise 5}}
-\subsection{Exercise 6\label{subsection:Exercise 6}}
+\begin{tcolorbox}[colback=blue!5,colframe=blue!75!black,title=Solution]
+The prior $p_{\vect{\theta}}(z)$ is a standard normal distribution, and  $q_{\vect{\phi}}(z|\bx)$ will also be a normal distribution with parameters $\vect{\phi} = (\mu, \sigma^2)$.  The KL divergence between these distributions is then 
+\begin{align*}
+    D_{KL}(q_{\vect{\phi}}(z|\bx)||p_{\theta}(z) ) =& \ \Em_{q_{\vect{\phi}}(z|\bx)}\Big[\log \Bigg(\frac{p_{\theta}(z) }{q_{\vect{\phi}}(z|\bx)}\Bigg)\Big] \\
+    =& \Em_{q_{\vect{\phi}}(z|\bx)}\Big[ \log(\sigma) - \frac{z^2}{2} + \frac{1}{2\sigma^2}(z - \mu)^2 \Big]\\
+    =& \log(\sigma) - \frac{\mu^2 + \sigma^2}{2} + \frac{1}{2} \  \ \text{as} \  \ \Em_{q_{\vect{\phi}}(z|\bx)}(z-\mu)^2 = \sigma^2\\
+    =& \ \frac{1}{2}\Bigg[1  + \log(\sigma^2) - \mu^2 - \sigma^2 \Bigg]
+\end{align*}
+\end{tcolorbox}
+

@@ -1,20 +1,112 @@
 \section{Implementation \label{section:Implementation}}
+% 200 Words- Describe the steps of the implementation
+The following VAE implementation will be done in \texttt{python} using the deep learning library \texttt{pytorch}. Therefore,  make sure it is attempted using a \textbf{python} $3$ environment with  both  \texttt{pytorch} and \texttt{torchvision} installed.  We recommend completing this section of the tutorial in Google's free  \href{https://colab.research.google.com/}{Colaboratory}, as it has all the requisite libraries pre-installed and also has access to GPUs (Graphics Processing Units) which decrease the  length of time the model will take to train.\\
 
 
-
-% Baseline Classifier Design
-\subsection{CNN Implementation \label{subsection:CNN Implementation}}
-The first model that we will implement will be the CNN (Convolutional Neural Network). When trained on the entire data set this network has a test set  accuracy of approximately 99\%. 
 
 % Autoencoder Implementation
-\subsection{Autoencoder Implementation \label{subsection:Autoencoder Implementation}}
+\subsection{VAE Implementation \label{subsection:Autoencoder Implementation}}
+ Let us begin by importing the necessary libraries into our chosen \texttt{python} environment, setting that if available, a  GPU will be used.
+ 
+ 
+ \captionof{listing}{Pytorch Imports \label{code:pytorchImports}}
+ \inputminted{python}{pytorchImports.py}
+ 
+ 
+ To implement the VAE in  we will create 4 \texttt{python} classes, seen in \textbf{Listings \ref{code:encoder},\ref{code:latent},\ref{code:decoder},\ref{code:VAE}}.  These network classes comprise the architecture of the model.  Each network class  inherits from \mintinline{python}{torch.nn.Module}, as it is  the base class for all \texttt{pytorch} networks. Each class will also have the method \mintinline{python}{def forward(self,x)} to compute each networks forward pass.\par
+ Let us first look at the \textbf{Encoder} and \textbf{Decoder} networks for our model (\textbf{Listings \ref{code:encoder},\ref{code:decoder}}).
+ 
+ % Encoder and Decoder Networks
+\captionof{listing}{Encoder Network Class\label{code:encoder}}
+\inputminted[breaklines, breakafter=d]{python}{encoder.py}
+\newpage
+\captionof{listing}{Decoder Network Class\label{code:decoder}}
+\inputminted{python}{decoder.py} % Description of Encoder and Decoder Network
+ 
+ The encoder and decoder networks are both relatively simple, the encoder network has two fully connected layers, each with a  ReLU activation. Similarly, the decoder network has three fully connected layers with the a ReLU activation  on the first two layers and a Sigmoid activation on the output layer. It is important to have a Sigmoid activation on the output layer as the loss function we are going to use,  \textbf{Listing \ref{code:loss}}, requires that all input values fall in the interval $(0,1)$.
+ \vspace{0.2cm}\\
+ \begin{tcolorbox}[colback=blue!5,colframe=blue!75!black,title=Exercise 3]
+ Implement a VAE in which both the Encoder Network and the Decoder Network have convolutional layers. Compare the results found using this network to those presented in this tutorial. 
+ \end{tcolorbox}
+ 
+The next part of the network that we need to implement is the latent distribution and sampling aspect of a VAE, \textbf{Figure \ref{fig:VAE}}, this is shown in \textbf{Listing \ref{code:latent}}.\\
+ 
+\captionof{listing}{Latent Class\label{code:latent}}
+\inputminted{python}{latent.py}
+We see here that the latent class uses the output from our encoder network to learn the mean $\mu$, and log variance, $\log(\sigma^2)$, of the Gaussian latent distribution.  We use the log variance as it means we do not have to place an activation function on either of the two linear layers. If the output was simply $\sigma^2$, then we would would have to obviously constrain the output to be greater than zero.\\  The method \mintinline{python}{def forward(self, x)} then uses the reparametrization trick (\textbf{Section \ref{subsubection:ReparametrizationTrick}}) to sample from the latent  distribution and allow back propagation through the entire network.\par\\
+\vspace{0.4cm}\\
+ With all these classes implemented we can finally implement the VAE class \footnote{The Author is aware that the VAE could be implemented using a single class, however, this modularity is pedagogically useful and has a practical application in \textbf{Section \ref{subsection:Results}}.}, which is just an amalgamation of the 3 previously defined classes, and their forward methods.\\
+ \captionof{listing}{VAE Class \label{code:VAE}}
+ \inputminted{python}{vae.py}
+ The last thing to implement before we can go ahead and start training our network is the loss function.  The function \mintinline{python}{def criterion(x,y,mu,log_variance)} seen in \textbf{Listing \ref{code:loss}} will be the loss function we will use to train our network, which is an implementation of \textbf{Equation \ref{eq:loss}} presented in \textbf{Section \ref{subsection:Variational Autoencoders }}.\\
+ \captionof{listing}{Loss Function \label{code:loss}}
+ \inputminted[breaklines, breakafter=d]{python}{loss.py}
+ \newpage\\
+ Now that we have these classes and functions implemented in \texttt{python}, we can define and print out our model.  For the purpose of this tutorial we are going to train  a very simple VAE, one with a 2 dimensional latent distribution.  This will result in poorer reconstructions of the images, due to the large amount of compression,  but  will allow for more intuitive generation of new samples. The details of the \texttt{pytorch} model are outlined  in \textbf{Listing \ref{code:model}}.\\
+ \captionof{listing}{Pytorch VAE  Model \label{code:model}}
+ \inputminted{python}{model.py}
+ 
+  
+ 
+\newpage
 
+\subsection{Data Preparation \label{subsection:Data Preparation}}
 
-% Linear Classifier Implementation
-\subsection{Classifier Implementation \label{subsection:Classifier Implementation}}
+% Initial Preparation and TSNE plots to show the separation
+% of data points
+The following imports are required to import the \textbf{MNIST} data set and the \texttt{pytorch} DataLoader class to begin the training of the model.
+\inputminted{python}{dataImport.py}
+The data is then imported and converted to \texttt{pytorch} tensors.\\
+\inputminted[breaklines, breakafter=d]{python}{mnistImport.py}
 
 % Results and comparisons for different levels of coverage
-\subsection{Results \label{subsection:Results}}
 
-% Possible Extensions to achieve higher accuracy
-\subsection{Extensions \label{subsection:Extensions}}
+\subsection{Training \label{subsection:training}}
+The function in \textbf{Listing \ref{code:train}} is used to train the model. The training function is fairly standard, it uses the Adam optimizer to train the network via backpropogation and prints out some training progress at a user defined interval.  One thing that should be noticed is that the target \textbf{MNIST} images should be converted to a binary pattern to properly compute the loss.\\
+\captionof{listing}{Training \label{code:train}}
+\inputminted[breaklines, breakafter=d]{python}{train.py}
+
+
+\subsection{Results
+\label{subsection:Results}}
+The model is then trained for  $200$ epochs with  a batch size of 128,  using all other default parameters specified in \textbf{Listing \ref{code:train}}. To evaluate how the  model has trained we can use the following function to see how well it reconstruct \textbf{MNIST} digits. 
+\captionof{listing}{Reconstruction Function \label{code:reconstruction}}
+\begin{minted}{python}
+def reconstruction(x,y):
+"""
+   Plots 5 reconstructed images X vs the target image Y
+"""
+  fig, ax = plt.subplots(2,5)
+  for i in range(5):
+    ax[0,i].imshow(x[i,:,:], cmap='gray')  
+    ax[0,i].axis('off')
+    ax[1, i].imshow(y[i,:,:],cmap='gray')
+    ax[1,i].axis('off')
+  plt.show()
+\end{minted}
+This produces the reconstructions shown in \textbf{Figure \ref{fig:recon}}.
+\begin{figure}[h!]
+    \centering
+    \includegraphics{docs/images/recon.png}
+    \caption{Reconstructed \textbf{MNIST} digits. The original images are displayed on the top row and the reconstructed images are displayed across the bottom row.}
+    \label{fig:recon}
+\end{figure}\\
+As we can see all the  reconstructed \textbf{MNIST} digits are all slightly blurry, this is to be expected due to the low dimensionality of the latent space.\par
+
+\begin{tcolorbox}[colback=blue!5,colframe=blue!75!black,title=Exercise 4]
+ Train your own VAE on \textbf{MNIST} using $2$, $3$, and $20$ dimensional latent distributions. Compare the quality of the digit reconstructions and generation of new samples  for each network.\\
+  \end{tcolorbox}
+
+We can now easily  uniformly sample new images from this latent space by creating a new decoder network and loading in our trained weights from the previously trained network, \mintinline{python}{net}
+\begin{minted}{python}
+decoder = Decoder(2, 32, 512, 784) # New Decoder
+decoder.load_state_dict(net.decoder.state_dict())  # Load Trained weights
+\end{minted}
+\textbf{Figure \ref{fig:sample}} was then created by uniformly sampling from a bivariate standard normal distributions cumulative distribution function  and feeding these samples through the newly created encoder network.  
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width = 0.6\linewidth]{docs/images/sample.png}
+    \caption{Sampled \textbf{MNIST} images from the $2$D latent space.}
+    \label{fig:sample}
+\end{figure}\\
+\textbf{Figure \ref{fig:sample}} shows, quite intuitively, the distribution our model has learnt. As we can see that the straighter digits (1,7,9,4) are distributed close together, with the rounder digits (0,6,8,3,2) clustered on the opposite side of the distribution.
